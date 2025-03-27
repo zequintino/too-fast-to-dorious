@@ -1,6 +1,10 @@
 import { useState, useEffect, useRef, useMemo } from "react";
 import { Task } from "../../types";
 import TodoItem from "./TodoItem";
+import Timer from "../Timer/Timer";
+import { CiSquarePlus, CiSaveDown1 } from "react-icons/ci";
+import { useTimer } from "../../context/TimerContext";
+import "./TodoList.css";
 
 export default function TodoList() {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -11,6 +15,9 @@ export default function TodoList() {
     enabled: false,
     task: "",
   });
+  
+  // Replace local timer state with context
+  const { isTimerActive, setTimerActive } = useTimer();
 
   useEffect(() => {
     if (firstRender.current) {
@@ -23,8 +30,18 @@ export default function TodoList() {
   }, [tasks]);
 
   const tasksCount = useMemo(() => {
-    return `${tasks.length} ${tasks.length === 1 ? "To-do..." : "To-dos..."}`;
+    return `${!tasks.length ? "no ToDorious available..." : ""}`;
   }, [tasks]);
+
+  // Update timer handlers to use context
+  const handleTimerStart = () => {
+    setTimerActive(true);
+  };
+
+  const handleTimerEnd = () => {
+    setTimerActive(false);
+    alert("Time's up! How many ToDorious did you complete?");
+  };
 
   function handleCheckTask(index: number) {
     setTasks((prevTasks) =>
@@ -35,6 +52,8 @@ export default function TodoList() {
   }
 
   function handleAddTask() {
+    if (isTimerActive) return; // Disable when timer is active
+    
     if (!input) {
       alert("Please enter a To-do...");
       return;
@@ -48,6 +67,8 @@ export default function TodoList() {
   }
 
   function handleEditTask(item: Task) {
+    if (isTimerActive) return; // Disable when timer is active
+    
     inputRef.current?.focus();
     setInput(item.text);
     setEditTask({
@@ -57,6 +78,8 @@ export default function TodoList() {
   }
 
   function handleSaveEdit() {
+    if (isTimerActive) return; // Disable when timer is active
+    
     const editedTasks = tasks.map((task) =>
       task.text === editTask.task ? { ...task, text: input } : task
     );
@@ -66,25 +89,40 @@ export default function TodoList() {
   }
 
   function handleDeleteTask(item: string) {
+    if (isTimerActive) return; // Disable when timer is active
+    
     const newTasks = tasks.filter((task) => task.text !== item);
     setTasks(newTasks);
   }
 
   return (
     <div className="todo-container">
-      <h2>To-do fast</h2>
-      <div className="todo-input-area">
-        <input
-          ref={inputRef}
-          value={input}
-          placeholder="Add a To-do..."
-          onChange={(e) => setInput(e.target.value)}
-        />
-        <button onClick={handleAddTask}>{editTask.enabled ? "To-edit" : "To-add"}</button>
-      </div>
-      <hr />
-      <strong>{tasksCount}</strong>
-      <br /><br />
+      <Timer 
+        isActive={isTimerActive}
+        onTimerStart={handleTimerStart}
+        onTimerEnd={handleTimerEnd}
+      />
+      
+      {!isTimerActive && (
+        <div className="todo-input-area">
+          <input
+            ref={inputRef}
+            value={input}
+            placeholder="Add a ToDorious..."
+            onChange={(e) => setInput(e.target.value)}
+            disabled={isTimerActive}
+          />
+          <button onClick={handleAddTask} disabled={isTimerActive}>
+            {editTask.enabled ? <CiSaveDown1 /> : <CiSquarePlus />}
+            <span className="button-text">
+              {editTask.enabled ? "Save" : "Add"}
+            </span>
+          </button>
+        </div>
+      )}
+      
+      <p style={{textAlign: "center"}}><strong>{tasksCount}</strong></p>
+      
       {tasks.map((item, index) => (
         <TodoItem 
           key={index}
@@ -93,6 +131,7 @@ export default function TodoList() {
           onCheck={handleCheckTask}
           onEdit={handleEditTask}
           onDelete={handleDeleteTask}
+          timerActive={isTimerActive}
         />
       ))}
     </div>

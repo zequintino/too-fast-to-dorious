@@ -1,0 +1,27 @@
+/* Checkup List styles */
+.checkup-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  margin: 5px 0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.checkup-item.checked {
+  background-color: #90EE90; /* Light green */
+}
+
+/* Add checkup form */
+.add-checkup {
+  display: flex;
+  margin-bottom: 15px;
+}
+
+.add-checkup input {
+  flex: 1;
+  padding: 8px;
+  margin-right: 10px;
+}

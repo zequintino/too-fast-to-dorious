@@ -1,0 +1,162 @@
+/* Timer styles */
+.timer-setup {
+  margin: 20px 0;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Sleek timer display */
+.timer-sleek-display {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+  width: 100%;
+}
+
+.time-segment {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80px;
+}
+
+.time-value {
+  font-size: 32px;
+  font-weight: bold;
+  margin: 8px 0;
+  color: #333;
+}
+
+.time-separator {
+  font-size: 20px;
+  margin: 0 2px;
+  font-weight: bold;
+}
+
+.time-adjust-btn {
+  background: none;
+  border: none;
+  color: #4caf50;
+  cursor: pointer;
+  padding: 10px;
+  font-size: 22px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.2s;
+  border-radius: 50%;
+  height: 50px;
+  width: 50px;
+}
+
+.time-adjust-btn:hover {
+  background-color: #e0e0e0;
+}
+
+.time-adjust-btn svg {
+  width: 24px;
+  height: 24px;
+}
+
+.timer-buttons-container {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  width: 100%;
+  margin-top: 15px;
+}
+
+.timer-start-button {
+  background-color: #4caf50;
+  color: white;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+}
+
+.timer-start-button:hover {
+  background-color: #45a049;
+}
+
+.timer-start-button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.timer-start-button svg {
+  width: 24px;
+  height: 24px;
+  margin-right: 5px;
+}
+
+/* Timer countdown display */
+.timer-countdown {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  margin: 5px 0 15px 0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+}
+
+.timer-display {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+}
+
+.timer-label {
+  font-weight: bold;
+  margin-right: 10px;
+  color: #333;
+}
+
+/* Timer container - similar style to list items */
+.timer-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  margin: 5px 0 15px 0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+}
+
+/* Timer input fields container */
+.timer-input-fields {
+  display: flex;
+  align-items: center;
+}
+
+/* Individual time input */
+.time-input {
+  width: 40px;
+  text-align: center;
+  font-size: 20px;
+  padding: 5px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin: 0 2px;
+}
+
+/* Adding style for readonly inputs when timer is active */
+.time-input[readonly] {
+  background-color: transparent;
+  border-color: transparent;
+  color: #333;
+  font-weight: bold;
+}

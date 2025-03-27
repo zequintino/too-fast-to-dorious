@@ -1,0 +1,60 @@
+/* TodoList styles */
+.todo-container section {
+  margin-bottom: 10px;
+}
+
+.todo-container span {
+  flex-grow: 1;
+}
+
+.todo-container input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+.todo-container button {
+  margin-left: 5px;
+}
+
+/* Todo input area */
+.todo-input-area {
+  display: flex;
+  margin-bottom: 15px;
+}
+
+.todo-input-area input {
+  flex: 1;
+  padding: 8px;
+  margin-right: 10px;
+}
+
+.todo-input-area button {
+  white-space: nowrap;
+}
+
+/* Todo item */
+.todo-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  margin: 5px 0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.todo-item.checked {
+  background-color: #90EE90; /* Light green */
+}
+
+.todo-check-icon {
+  margin-right: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.todo-check-icon svg {
+  width: 24px;
+  height: 24px;
+}

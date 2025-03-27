@@ -1,3 +1,5 @@
+import { CiTrash } from "react-icons/ci";
+
 interface CheckupItemProps {
   checkup: {
     id: string;
@@ -16,12 +18,13 @@ export default function CheckupItem({ checkup, onToggle, onDelete }: CheckupItem
     >
       <span>{checkup.text}</span>
       <button 
+        className="icon-button danger"
         onClick={(e) => {
           e.stopPropagation();
           onDelete(checkup.id);
         }}
       >
-        Remove
+        <CiTrash />
       </button>
     </div>
   );

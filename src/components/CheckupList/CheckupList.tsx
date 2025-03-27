@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import CheckupItem from "./CheckupItem";
+import { CiSquarePlus } from "react-icons/ci";
+import "./CheckupList.css";
 
 interface Checkup {
   id: string;
@@ -49,10 +51,7 @@ export default function CheckupList() {
   };
 
   return (
-    <div className="checkup-container">
-      <h2>Home Checkups</h2>
-      <p>Add items you need to check before leaving home</p>
-      
+    <div className="checkup-container">      
       <div className="add-checkup">
         <input
           type="text"
@@ -60,7 +59,10 @@ export default function CheckupList() {
           onChange={(e) => setNewCheckup(e.target.value)}
           placeholder="Add new checkup item..."
         />
-        <button onClick={handleAddCheckup}>Add</button>
+        <button onClick={handleAddCheckup}>
+          <CiSquarePlus />
+          <span className="button-text">Add</span>
+        </button>
       </div>
       
       <div className="checkup-items">
