@@ -126,14 +126,39 @@
 
 /* Timer container - similar style to list items */
 .timer-container {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 15px;
   align-items: center;
   padding: 10px;
   margin: 5px 0 15px 0;
   border: 1px solid #ddd;
   border-radius: 4px;
   background-color: #f9f9f9;
+}
+
+/* Timer progress container */
+.timer-progress-container {
+  position: relative;
+  height: 40px;
+  background-color: #f0f0f0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-car {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: left 1s linear;
+  left: 0;
+}
+
+.progress-car img {
+  height: 30px;
+  width: auto;
+  display: block;
+  /* Ensure the image is treated as a block element */
 }
 
 /* Timer input fields container */
@@ -159,4 +184,19 @@
   border-color: transparent;
   color: #333;
   font-weight: bold;
+}
+
+/* Media query for mobile devices */
+@media (max-width: 768px) {
+  .timer-container {
+    grid-template-columns: 1fr auto;
+    /* Remove middle column for progress */
+    gap: 10px;
+    /* Reduce gap for mobile */
+  }
+
+  .timer-progress-container {
+    display: none;
+    /* Hide progress container on mobile */
+  }
 }

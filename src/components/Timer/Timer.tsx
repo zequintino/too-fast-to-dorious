@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef, ChangeEvent } from "react";
 import { CiPlay1 } from "react-icons/ci";
 import "./Timer.css";
+import TimerInputs from "./TimerInputs";
+import ProgressCar from "./ProgressCar";
 
 interface TimerProps {
   onTimerStart: () => void;
@@ -9,15 +11,30 @@ interface TimerProps {
   buttonText?: string;
 }
 
-export default function Timer({ onTimerStart, onTimerEnd, isActive, buttonText = "Start" }: TimerProps) {
+export default function Timer({ onTimerStart, onTimerEnd, isActive, buttonText = "" }: TimerProps) {
   const timerRef = useRef<NodeJS.Timeout | null>(null);
-  // Store values as strings to handle empty inputs better
+  const progressContainerRef = useRef<HTMLDivElement>(null);
+  const carImageRef = useRef<HTMLImageElement>(null);
+  const imageLoadedRef = useRef(false);
+  
   const [timerValues, setTimerValues] = useState({ 
     hours: "00", 
     minutes: "00", 
     seconds: "00" 
   });
   const [remainingTime, setRemainingTime] = useState(0);
+  const [totalTime, setTotalTime] = useState(0);
+  const [progress, setProgress] = useState(0);
+  
+  // Handle image load in a useEffect instead of inline
+  useEffect(() => {
+    if (carImageRef.current && carImageRef.current.complete && !imageLoadedRef.current) {
+      imageLoadedRef.current = true;
+      setTimeout(() => {
+        setProgress(prev => prev);
+      }, 0);
+    }
+  });
 
   // Clean up timer on component unmount
   useEffect(() => {
@@ -28,9 +45,9 @@ export default function Timer({ onTimerStart, onTimerEnd, isActive, buttonText =
     };
   }, []);
   
-  // Format the display time when active
+  // Format the display time when active and calculate progress
   useEffect(() => {
-    if (isActive) {
+    if (isActive && totalTime > 0) {
       const h = Math.floor(remainingTime / 3600);
       const m = Math.floor((remainingTime % 3600) / 60);
       const s = remainingTime % 60;
@@ -40,30 +57,30 @@ export default function Timer({ onTimerStart, onTimerEnd, isActive, buttonText =
         minutes: m.toString().padStart(2, '0'),
         seconds: s.toString().padStart(2, '0')
       });
+      
+      // Calculate progress percentage
+      const elapsed = totalTime - remainingTime;
+      const progressPercentage = Math.min(100, Math.max(0, (elapsed / totalTime) * 100));
+      setProgress(progressPercentage);
     }
-  }, [remainingTime, isActive]);
+  }, [remainingTime, isActive, totalTime]);
   
   // Handle direct input for time values
   const handleTimeChange = (e: ChangeEvent<HTMLInputElement>, field: 'hours' | 'minutes' | 'seconds') => {
-    // Allow empty string temporarily for easier deletion
     let inputValue = e.target.value;
     
-    // Only allow numbers and empty strings
     if (inputValue !== '' && !/^\d+$/.test(inputValue)) {
       return;
     }
     
-    // Convert to number for validation
     let numValue = inputValue === '' ? 0 : parseInt(inputValue);
     
-    // Set limits based on field
     if (field === 'hours') {
       numValue = Math.min(numValue, 23);
     } else {
       numValue = Math.min(numValue, 59);
     }
     
-    // Update the value - keep as string
     setTimerValues({
       ...timerValues,
       [field]: inputValue === '' ? '' : numValue.toString()
@@ -85,6 +102,8 @@ export default function Timer({ onTimerStart, onTimerEnd, isActive, buttonText =
     }
     
     setRemainingTime(totalSeconds);
+    setTotalTime(totalSeconds); // Store the total time for progress calculation
+    setProgress(0); // Reset progress
     
     // Call onTimerStart in a setTimeout to avoid the React warning
     setTimeout(() => {
@@ -94,9 +113,16 @@ export default function Timer({ onTimerStart, onTimerEnd, isActive, buttonText =
       timerRef.current = setInterval(() => {
         setRemainingTime(prev => {
           if (prev <= 1) {
-            // Timer complete
             if (timerRef.current) clearInterval(timerRef.current);
-            onTimerEnd();
+            
+            // Set progress to 100% to ensure car reaches end position
+            setProgress(100);
+            
+            // Add a delay before calling onTimerEnd to allow animation to complete
+            setTimeout(() => {
+              onTimerEnd();
+            }, 1000);
+            
             return 0;
           }
           return prev - 1;
@@ -119,31 +145,17 @@ export default function Timer({ onTimerStart, onTimerEnd, isActive, buttonText =
 
   return (
     <div className="timer-container">
-      <div className="timer-input-fields">
-        <input
-          type="text"
-          className="time-input"
-          value={timerValues.hours}
-          onChange={(e) => handleTimeChange(e, 'hours')}
-          readOnly={isActive}
-        />
-        <span className="time-separator">:</span>
-        <input
-          type="text"
-          className="time-input"
-          value={timerValues.minutes}
-          onChange={(e) => handleTimeChange(e, 'minutes')}
-          readOnly={isActive}
-        />
-        <span className="time-separator">:</span>
-        <input
-          type="text"
-          className="time-input"
-          value={timerValues.seconds}
-          onChange={(e) => handleTimeChange(e, 'seconds')}
-          readOnly={isActive}
-        />
-      </div>
+      <TimerInputs 
+        values={timerValues}
+        onChange={handleTimeChange}
+        readonly={isActive}
+      />
+      
+      <ProgressCar 
+        progress={progress}
+        containerRef={progressContainerRef}
+        carRef={carImageRef}
+      />
       
       <button 
         onClick={handleStartClick} 

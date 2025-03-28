@@ -1,3 +1,11 @@
+/* Import the custom font - fix the path */
+@import url('./fonts/fonts.css');
+
+/* Apply the font globally */
+* {
+  font-family: 'AtkinsonHyperlegibleMono', monospace;
+}
+
 /* General app styling */
 .app-container {
   max-width: 600px;

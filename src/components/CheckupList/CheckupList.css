@@ -5,13 +5,25 @@
   align-items: center;
   padding: 10px;
   margin: 5px 0;
-  border: 1px solid #ddd;
+  border: 2px solid #ddd; /* Increased border width */
   border-radius: 4px;
   cursor: pointer;
+  transition: border-color 0.2s; /* Changed to border-color transition */
 }
 
 .checkup-item.checked {
-  background-color: #90EE90; /* Light green */
+  border-color: #4caf50; /* Green border for checked items */
+  border-width: 2px;
+}
+
+/* Text truncation for checkup items */
+.checkup-item span {
+  flex-grow: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-right: 10px; /* Space between text and button */
+  min-width: 0; /* Required for text-overflow to work in flex items */
 }
 
 /* Add checkup form */

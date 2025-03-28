@@ -2,10 +2,14 @@ import { BrowserRouter as Router, Routes, Route, Link, useLocation, useNavigate 
 import TodoPage from "./pages/TodoPage";
 import CheckupPage from "./pages/CheckupPage";
 import "./App.css";
+// Import the font CSS file to ensure it's loaded
+import "./fonts/fonts.css";
 import domBryanSwag from "./assets/dom-bryan-swag.png";
 import domSwag from "./assets/dom-swag.png";
 import bryanSwag from "./assets/bryan-swag.png";
 import { TimerProvider, useTimer } from "./context/TimerContext";
+import ErrorBoundary from "./components/ErrorBoundary";
+import { useEffect } from "react";
 
 // Banner component that changes based on route
 function DynamicBanner() {
@@ -81,6 +85,14 @@ function Navigation() {
   );
 }
 
+// NotFound component that throws an error for invalid routes
+function NotFound() {
+  useEffect(() => {
+    throw new Error("Route not found");
+  }, []);
+  return null; // This won't render as the error is thrown in useEffect
+}
+
 function AppContent() {
   return (
     <>
@@ -88,8 +100,22 @@ function AppContent() {
       <Navigation />
       <main>
         <Routes>
-          <Route path="/" element={<TodoPage />} />
-          <Route path="/checkups" element={<CheckupPage />} />
+          <Route path="/" element={
+            <ErrorBoundary fallback={<div>Sorry, something went wrong with the ToDorious page.</div>}>
+              <TodoPage />
+            </ErrorBoundary>
+          } />
+          <Route path="/checkups" element={
+            <ErrorBoundary fallback={<div>Sorry, something went wrong with the Fastlist page.</div>}>
+              <CheckupPage />
+            </ErrorBoundary>
+          } />
+          {/* Catch-all route for invalid paths */}
+          <Route path="*" element={
+            <ErrorBoundary fallback={<div>404 - Page not found</div>}>
+              <NotFound />
+            </ErrorBoundary>
+          } />
         </Routes>
       </main>
     </>
@@ -99,13 +125,15 @@ function AppContent() {
 export default function App() {
   return (
     <Router>
-      <TimerProvider>
-        <div className="app-container">
-          <Routes>
-            <Route path="*" element={<AppContent />} />
-          </Routes>
-        </div>
-      </TimerProvider>
+      <ErrorBoundary>
+        <TimerProvider>
+          <div className="app-container">
+            <Routes>
+              <Route path="*" element={<AppContent />} />
+            </Routes>
+          </div>
+        </TimerProvider>
+      </ErrorBoundary>
     </Router>
   );
 }

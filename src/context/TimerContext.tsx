@@ -7,11 +7,14 @@ interface TimerContextType {
 
 const TimerContext = createContext<TimerContextType | undefined>(undefined);
 
-export const TimerProvider: React.FC<{children: React.ReactNode}> = ({ children }) => {
+export const TimerProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isTimerActive, setTimerActive] = useState(false);
 
   return (
-    <TimerContext.Provider value={{ isTimerActive, setTimerActive }}>
+    <TimerContext.Provider value={{
+      isTimerActive,
+      setTimerActive
+    }}>
       {children}
     </TimerContext.Provider>
   );
