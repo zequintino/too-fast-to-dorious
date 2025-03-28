@@ -127,3 +127,13 @@ svg {
 .page {
   width: 100%;
 }
+
+/* Prevent zoom on iOS devices for all inputs */
+@media (max-width: 768px) {
+  input,
+  input[type="text"],
+  textarea,
+  select {
+    font-size: 16px !important; /* Minimum font size to prevent iOS zoom */
+  }
+}
