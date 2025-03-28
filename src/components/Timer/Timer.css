@@ -189,14 +189,11 @@
 /* Media query for mobile devices */
 @media (max-width: 768px) {
   .timer-container {
-    grid-template-columns: 1fr auto;
-    /* Remove middle column for progress */
-    gap: 10px;
-    /* Reduce gap for mobile */
+    grid-template-columns: auto auto; /* Change from 1fr auto to auto auto */
+    justify-content: space-between; /* This keeps the inputs left and button right */
   }
 
   .timer-progress-container {
     display: none;
-    /* Hide progress container on mobile */
   }
 }
