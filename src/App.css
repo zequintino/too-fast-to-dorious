@@ -63,14 +63,12 @@ nav a {
 }
 
 nav a:hover {
-  border-color: #4caf50;
-  color: #4caf50;
+  background-color: #f0f0f0;
 }
 
 /* Active navigation link */
 nav a.active {
   background-color: #f0f0f0;
-  border-color: #4caf50;
   color: #333;
 }
 
@@ -100,10 +98,6 @@ button {
 
 button:hover {
   background: #e0e0e0;
-}
-
-.button-text {
-  margin-left: 5px;
 }
 
 /* Icon button styles */
@@ -147,11 +141,13 @@ svg {
 
 /* Prevent zoom on iOS devices for all inputs */
 @media (max-width: 768px) {
+
   input,
   input[type="text"],
   textarea,
   select {
-    font-size: 16px !important; /* Minimum font size to prevent iOS zoom */
+    font-size: 16px !important;
+    /* Minimum font size to prevent iOS zoom */
   }
 }
 

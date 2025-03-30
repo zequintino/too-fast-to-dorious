@@ -61,7 +61,6 @@ export default function CheckupList() {
         />
         <button onClick={handleAddCheckup}>
           <CiSquarePlus />
-          <span className="button-text">Add</span>
         </button>
       </div>
       
