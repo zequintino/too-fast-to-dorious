@@ -97,7 +97,6 @@
 .timer-start-button svg {
   width: 24px;
   height: 24px;
-  margin-right: 5px;
 }
 
 /* Timer countdown display */
@@ -171,7 +170,7 @@
 .time-input {
   width: 40px;
   text-align: center;
-  font-size: 20px;
+  font-size: 16px; /* Updated from 20px to ensure consistency */
   padding: 5px;
   border: 1px solid #ddd;
   border-radius: 4px;
@@ -184,6 +183,34 @@
   border-color: transparent;
   color: #333;
   font-weight: bold;
+}
+
+.timer-refresh-button {
+  background-color: #f39c12; /* Orange color for refresh button */
+  color: white;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+}
+
+.timer-refresh-button:hover {
+  background-color: #e67e22;
+}
+
+.timer-refresh-button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.timer-refresh-button svg {
+  width: 24px;
+  height: 24px;
 }
 
 /* Media query for mobile devices */

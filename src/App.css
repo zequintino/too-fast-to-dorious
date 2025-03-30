@@ -11,6 +11,9 @@
   max-width: 600px;
   margin: 0 auto;
   padding: 20px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Banner styling */
@@ -52,10 +55,23 @@ nav a {
   text-decoration: none;
   color: #333;
   font-weight: bold;
+  padding: 8px 15px;
+  border: 2px solid #ddd;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  display: inline-block;
 }
 
 nav a:hover {
-  color: #0066cc;
+  border-color: #4caf50;
+  color: #4caf50;
+}
+
+/* Active navigation link */
+nav a.active {
+  background-color: #f0f0f0;
+  border-color: #4caf50;
+  color: #333;
 }
 
 /* Disabled navigation styles */
@@ -63,6 +79,7 @@ nav a:hover {
   color: #999 !important;
   cursor: not-allowed;
   pointer-events: none;
+  opacity: 0.7;
 }
 
 .nav-disabled {
@@ -136,4 +153,14 @@ svg {
   select {
     font-size: 16px !important; /* Minimum font size to prevent iOS zoom */
   }
+}
+
+/* Footer styles */
+.app-footer {
+  margin-top: auto;
+  padding: 20px 0;
+  text-align: center;
+  color: gray;
+  font-size: 0.9rem;
+  border-top: 1px solid #eee;
 }

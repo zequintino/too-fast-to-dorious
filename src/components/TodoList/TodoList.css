@@ -61,6 +61,13 @@
   100% { border-color: #e74c3c; }
 }
 
+/* Add styles for non-interactive items */
+.todo-item.no-interact {
+  cursor: default;
+  pointer-events: none;
+  opacity: 0.9;
+}
+
 .todo-check-icon {
   margin-right: 10px;
   display: flex;

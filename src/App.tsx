@@ -14,10 +14,10 @@ import { useEffect } from "react";
 // Banner component that changes based on route
 function DynamicBanner() {
   const location = useLocation();
-  
+
   // Choose the banner based on the current path
   const getBanner = () => {
-    if (location.pathname === "/checkups") {
+    if (location.pathname === "/brian-checks") {
       return bryanSwag;
     } else if (location.pathname === "/") {
       return domSwag;
@@ -30,7 +30,7 @@ function DynamicBanner() {
   const getBannerClass = () => {
     if (location.pathname === "/") {
       return "dom-banner";
-    } else if (location.pathname === "/checkups") {
+    } else if (location.pathname === "/brian-checks") {
       return "bryan-banner";
     } else {
       return "";
@@ -48,8 +48,9 @@ function DynamicBanner() {
 // Navigation component with timer awareness
 function Navigation() {
   const { isTimerActive } = useTimer();
+  const location = useLocation();
   const navigate = useNavigate();
-  
+
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, path: string) => {
     if (isTimerActive) {
       e.preventDefault();
@@ -58,30 +59,41 @@ function Navigation() {
     }
     navigate(path);
   };
-  
+
   return (
-    <nav className={isTimerActive ? "nav-disabled" : ""}>
-      <ul>
-        <li>
-          <Link 
-            to="/" 
-            onClick={(e) => handleNavClick(e, "/")}
-            className={isTimerActive ? "disabled-link" : ""}
-          >
-            ToDorious
-          </Link>
-        </li>
-        <li>
-          <Link 
-            to="/checkups" 
-            onClick={(e) => handleNavClick(e, "/checkups")}
-            className={isTimerActive ? "disabled-link" : ""}
-          >
-            Fastlist
-          </Link>
-        </li>
-      </ul>
-    </nav>
+    <>
+      <nav className={isTimerActive ? "nav-disabled" : ""}>
+        <ul>
+          <li>
+            <Link
+              to="/"
+              onClick={(e) => handleNavClick(e, "/")}
+              className={`${isTimerActive ? "disabled-link" : ""} ${location.pathname === "/" ? "active" : ""}`}
+            >
+              Dom Does
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/brian-checks"
+              onClick={(e) => handleNavClick(e, "/brian-checks")}
+              className={`${isTimerActive ? "disabled-link" : ""} ${location.pathname === "/brian-checks" ? "active" : ""}`}
+            >
+              Brian Checks
+            </Link>
+          </li>
+        </ul>
+      </nav>
+    </>
+  );
+}
+
+// Footer component
+function Footer() {
+  return (
+    <footer className="app-footer">
+      <p><i>empatiempatie ©</i></p>
+    </footer>
   );
 }
 
@@ -105,7 +117,7 @@ function AppContent() {
               <TodoPage />
             </ErrorBoundary>
           } />
-          <Route path="/checkups" element={
+          <Route path="/brian-checks" element={
             <ErrorBoundary fallback={<div>Sorry, something went wrong with the Fastlist page.</div>}>
               <CheckupPage />
             </ErrorBoundary>
@@ -118,6 +130,7 @@ function AppContent() {
           } />
         </Routes>
       </main>
+      <Footer />
     </>
   );
 }

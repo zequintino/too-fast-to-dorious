@@ -21,6 +21,9 @@ export default function TodoItem({
   timerCompleted 
 }: TodoItemProps) {
   const handleClick = () => {
+    // Prevent toggling tasks if timer has completed
+    if (timerCompleted) return;
+    
     onCheck(index);
   };
 
@@ -36,8 +39,12 @@ export default function TodoItem({
     if (item.done) {
       classes += ' checked';
     } else if (timerCompleted) {
-      // Only add the timer-expired class if the item is NOT done AND the timer has completed
       classes += ' timer-expired';
+    }
+    
+    // Add a class to show it's not interactive when timer is completed
+    if (timerCompleted) {
+      classes += ' no-interact';
     }
     
     return classes;
@@ -56,7 +63,8 @@ export default function TodoItem({
       <span style={{ textDecoration: item.done ? "line-through" : "none" }}>
         {item.text}
       </span>
-      {!timerActive && (
+      {/* Hide buttons when timer is active OR timer has completed */}
+      {!timerActive && !timerCompleted && (
         <div className="todo-item-buttons">
           <button 
             className="icon-button" 

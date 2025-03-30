@@ -1,5 +1,5 @@
-import { useState, useRef, useMemo, useCallback } from "react";
-import { CiSquarePlus, CiSaveDown1 } from "react-icons/ci";
+import { useState, useRef, useCallback } from "react";
+import { CiSquarePlus, CiFloppyDisk } from "react-icons/ci";
 import "./TodoList.css";
 import TodoItem from "./TodoItem";
 import Timer from "../Timer/Timer";
@@ -16,22 +16,37 @@ export default function TodoList() {
     task: "",
   });
   
-  const { isTimerActive, setTimerActive } = useTimer();
-  const [timerCompleted, setTimerCompleted] = useState(false);
-
-  const tasksCount = useMemo(() => {
-    return `${!tasks.length ? "no ToDorious available..." : ""}`;
-  }, [tasks]);
+  // Use global timer context
+  const { 
+    isTimerActive, 
+    setTimerActive, 
+    isTimerCompleted, 
+    setTimerCompleted,
+    inputVisible,
+    setInputVisible
+  } = useTimer();
 
   const handleTimerStart = useCallback(() => {
     setTimerActive(true);
     setTimerCompleted(false);
-  }, [setTimerActive]);
+    setInputVisible(false); // Hide input when timer starts
+  }, [setTimerActive, setTimerCompleted, setInputVisible]);
 
   const handleTimerEnd = useCallback(() => {
     setTimerActive(false);
     setTimerCompleted(true);
-  }, [setTimerActive]);
+    // Keep input hidden after timer ends
+  }, [setTimerActive, setTimerCompleted]);
+
+  // Update refresh handler to show input again
+  const handleRefresh = useCallback(() => {
+    // Clear all tasks
+    setTasks([]);
+    // Reset timer completion state
+    setTimerCompleted(false);
+    // Make input visible again
+    setInputVisible(true);
+  }, [setTasks, setTimerCompleted, setInputVisible]);
 
   const handleCheckTask = useCallback((index: number) => {
     setTasks((prevTasks) =>
@@ -85,15 +100,22 @@ export default function TodoList() {
     setTasks(newTasks);
   }, [isTimerActive, tasks, setTasks]);
 
+  // Check if there are any tasks
+  const hasTasks = tasks.length > 0;
+
   return (
     <div className="todo-container" role="region" aria-label="Todo List">
       <Timer 
         isActive={isTimerActive}
+        isCompleted={isTimerCompleted}
         onTimerStart={handleTimerStart}
         onTimerEnd={handleTimerEnd}
+        onRefresh={handleRefresh}
+        hasTasks={hasTasks} // Pass the hasTasks flag
       />
       
-      {!isTimerActive && (
+      {/* Only show input when inputVisible is true (and timer is not active) */}
+      {!isTimerActive && inputVisible && (
         <div className="todo-input-area">
           <input
             ref={inputRef}
@@ -103,12 +125,10 @@ export default function TodoList() {
             disabled={isTimerActive}
           />
           <button onClick={handleAddTask} disabled={isTimerActive}>
-            {editTask.enabled ? <CiSaveDown1 /> : <CiSquarePlus />}
+            {editTask.enabled ? <CiFloppyDisk /> : <CiSquarePlus />}
           </button>
         </div>
       )}
-      
-      <p style={{textAlign: "center"}}><strong>{tasksCount}</strong></p>
       
       {tasks.map((item, index) => (
         <TodoItem 
@@ -119,7 +139,7 @@ export default function TodoList() {
           onEdit={handleEditTask}
           onDelete={handleDeleteTask}
           timerActive={isTimerActive}
-          timerCompleted={timerCompleted} // Pass the timer completed state
+          timerCompleted={isTimerCompleted} // Pass the timer completed state from context
         />
       ))}
     </div>
