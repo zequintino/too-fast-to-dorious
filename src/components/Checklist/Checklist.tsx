@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
-import CheckupItem from "./CheckupItem";
+import CheckupItem from "./ChecklistItem";
 import { CiSquarePlus } from "react-icons/ci";
-import "./CheckupList.css";
+import "./Checklist.css";
 
 interface Checkup {
   id: string;
@@ -29,19 +29,19 @@ export default function CheckupList() {
       alert("Please enter a checkup item...");
       return;
     }
-    
+
     const newItem: Checkup = {
       id: Date.now().toString(),
       text: newCheckup,
       checked: false
     };
-    
+
     setCheckups([...checkups, newItem]);
     setNewCheckup("");
   };
 
   const toggleCheckup = (id: string) => {
-    setCheckups(checkups.map(item => 
+    setCheckups(checkups.map(item =>
       item.id === id ? { ...item, checked: !item.checked } : item
     ));
   };
@@ -51,7 +51,7 @@ export default function CheckupList() {
   };
 
   return (
-    <div className="checkup-container">      
+    <div className="checkup-container">
       <div className="add-checkup">
         <input
           type="text"
@@ -63,14 +63,14 @@ export default function CheckupList() {
           <CiSquarePlus />
         </button>
       </div>
-      
+
       <div className="checkup-items">
         {checkups.map(item => (
-          <CheckupItem 
-            key={item.id} 
-            checkup={item} 
-            onToggle={toggleCheckup} 
-            onDelete={removeCheckup} 
+          <CheckupItem
+            key={item.id}
+            checkup={item}
+            onToggle={toggleCheckup}
+            onDelete={removeCheckup}
           />
         ))}
       </div>

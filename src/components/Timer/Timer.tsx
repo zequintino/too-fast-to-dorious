@@ -156,14 +156,14 @@ export default function Timer({
   const handleRefreshClick = () => {
     // Reset progress to move car back to start position
     setProgress(0);
-    
+
     // Reset timer values to initial state
     setTimerValues({
       hours: "00",
       minutes: "00",
       seconds: "00"
     });
-    
+
     // Call the parent component's refresh handler
     if (onRefresh) {
       onRefresh();
@@ -175,7 +175,7 @@ export default function Timer({
     const hours = parseInt(timerValues.hours || '0');
     const minutes = parseInt(timerValues.minutes || '0');
     const seconds = parseInt(timerValues.seconds || '0');
-    
+
     return hours > 0 || minutes > 0 || seconds > 0;
   };
 
@@ -197,13 +197,13 @@ export default function Timer({
         onClick={isCompleted ? handleRefreshClick : handleStartClick}
         className={isCompleted ? "timer-refresh-button" : "timer-start-button"}
         disabled={
-          isActive || 
-          (!hasTasks && !isCompleted) || 
+          isActive ||
+          (!hasTasks && !isCompleted) ||
           (!hasTimeEntered() && !isCompleted)
-        } 
+        }
         title={
-          !hasTasks && !isCompleted 
-            ? "Add tasks before starting timer" 
+          !hasTasks && !isCompleted
+            ? "Add tasks before starting timer"
             : !hasTimeEntered() && !isCompleted
               ? "Set time before starting timer"
               : ""

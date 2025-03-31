@@ -1,10 +1,11 @@
 import React, { createContext, useState, useContext } from 'react';
 
+
+export type TimerStatus = 'idle' | 'active' | 'completed';
+
 interface TimerContextType {
-  isTimerActive: boolean;
-  setTimerActive: (active: boolean) => void;
-  isTimerCompleted: boolean;
-  setTimerCompleted: (completed: boolean) => void;
+  timerStatus: TimerStatus;
+  setTimerStatus: (status: TimerStatus) => void;
   inputVisible: boolean;
   setInputVisible: (visible: boolean) => void;
 }
@@ -12,19 +13,18 @@ interface TimerContextType {
 const TimerContext = createContext<TimerContextType | undefined>(undefined);
 
 export const TimerProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [isTimerActive, setTimerActive] = useState(false);
-  const [isTimerCompleted, setTimerCompleted] = useState(false);
+  const [timerStatus, setTimerStatus] = useState<TimerStatus>('idle');
   const [inputVisible, setInputVisible] = useState(true);
 
   return (
-    <TimerContext.Provider value={{
-      isTimerActive,
-      setTimerActive,
-      isTimerCompleted,
-      setTimerCompleted,
-      inputVisible,
-      setInputVisible
-    }}>
+    <TimerContext.Provider
+      value={{
+        timerStatus,
+        setTimerStatus,
+        inputVisible,
+        setInputVisible
+      }}
+    >
       {children}
     </TimerContext.Provider>
   );
@@ -37,3 +37,7 @@ export const useTimer = (): TimerContextType => {
   }
   return context;
 };
+
+export const isTimerActive = (status: TimerStatus): boolean => status === 'active';
+export const isTimerCompleted = (status: TimerStatus): boolean => status === 'completed';
+export const isTimerIdle = (status: TimerStatus): boolean => status === 'idle';

@@ -1,4 +1,3 @@
-/* Import the custom font - fix the path */
 @import url('./fonts/fonts.css');
 
 /* Apply the font globally */
@@ -141,13 +140,12 @@ svg {
 
 /* Prevent zoom on iOS devices for all inputs */
 @media (max-width: 768px) {
-
   input,
   input[type="text"],
   textarea,
   select {
-    font-size: 16px !important;
     /* Minimum font size to prevent iOS zoom */
+    font-size: 16px !important;
   }
 }
 

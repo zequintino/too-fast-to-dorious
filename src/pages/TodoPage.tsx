@@ -1,9 +1,9 @@
-import TodoList from "../components/TodoList/TodoList";
+import Todo from "../components/Todo/Todo";
 
 export default function TodoPage() {
   return (
     <div className="page todo-page">
-      <TodoList />
+      <Todo />
     </div>
   );
 }

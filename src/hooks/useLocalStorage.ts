@@ -1,26 +1,31 @@
 import { useState, useEffect, useRef } from 'react';
 
 function useLocalStorage<T>(key: string, initialValue: T) {
-  const firstRender = useRef(true);
-  const [storedValue, setStoredValue] = useState<T>(initialValue);
-
-  // Load from localStorage on first render
-  useEffect(() => {
-    if (firstRender.current) {
+  const isInitialMount = useRef(true);
+  const [storedVal, setStoredVal] = useState<T>(() => {
+    try {
       const item = localStorage.getItem(key);
-      if (item) setStoredValue(JSON.parse(item));
-      firstRender.current = false;
+      return item ? JSON.parse(item) : initialValue;
+    } catch (error) {
+      console.error('Error reading from localStorage:', error);
+      return initialValue;
     }
-  }, [key]);
+  });
 
-  // Update localStorage when state changes
   useEffect(() => {
-    if (!firstRender.current) {
-      localStorage.setItem(key, JSON.stringify(storedValue));
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
     }
-  }, [key, storedValue]);
 
-  return [storedValue, setStoredValue] as const;
+    try {
+      localStorage.setItem(key, JSON.stringify(storedVal));
+    } catch (error) {
+      console.error('Error writing to localStorage:', error);
+    }
+  }, [key, storedVal]);
+
+  return [storedVal, setStoredVal] as const;
 }
 
 export default useLocalStorage;

@@ -1,5 +1,6 @@
 import { Task } from "../../types";
 import { CiEdit, CiTrash, CiSquareCheck, CiStop1 } from "react-icons/ci";
+import { TimerStatus, isTimerActive, isTimerCompleted } from "../../context/TimerContext";
 
 interface TodoItemProps {
   item: Task;
@@ -7,8 +8,7 @@ interface TodoItemProps {
   onCheck: (index: number) => void;
   onEdit: (item: Task) => void;
   onDelete: (text: string) => void;
-  timerActive: boolean;
-  timerCompleted: boolean; // Add new prop
+  timerStatus: TimerStatus; // Single status prop instead of two booleans
 }
 
 export default function TodoItem({ 
@@ -17,9 +17,12 @@ export default function TodoItem({
   onCheck, 
   onEdit, 
   onDelete, 
-  timerActive,
-  timerCompleted 
+  timerStatus
 }: TodoItemProps) {
+  // Derive the boolean values for backward compatibility and readability
+  const timerActive = isTimerActive(timerStatus);
+  const timerCompleted = isTimerCompleted(timerStatus);
+  
   const handleClick = () => {
     // Prevent toggling tasks if timer has completed
     if (timerCompleted) return;
