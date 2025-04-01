@@ -48,6 +48,11 @@ nav ul {
 nav li {
   margin: 0 20px;
   padding-bottom: 10px;
+  /* Ensure list items have even width */
+  flex: 1;
+  max-width: 150px;
+  display: flex;
+  justify-content: center;
 }
 
 nav a {
@@ -58,7 +63,12 @@ nav a {
   border: 2px solid #ddd;
   border-radius: 4px;
   transition: all 0.2s ease;
-  display: inline-block;
+  /* Make links fill available space with consistent sizing */
+  display: block;
+  width: 100%;
+  text-align: center;
+  white-space: nowrap;
+  min-width: 130px;
 }
 
 nav a:hover {
@@ -146,6 +156,24 @@ svg {
   select {
     /* Minimum font size to prevent iOS zoom */
     font-size: 16px !important;
+  }
+}
+
+/* Media query for smaller screens */
+@media (max-width: 480px) {
+  nav ul {
+    padding: 0 10px;
+  }
+  
+  nav li {
+    margin: 0 10px;
+    max-width: none;
+  }
+  
+  nav a {
+    padding: 8px 5px;
+    min-width: 0;
+    font-size: 0.9rem;
   }
 }
 
