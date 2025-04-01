@@ -58,6 +58,7 @@ function Navigation() {
                 ${timerIsActive ? "disabled-link" : ""} 
                 ${location.pathname === "/" ? "active" : ""}
               `}
+              style={{ textAlign: "center" }}
             >
               Dom Does
             </Link>
@@ -70,6 +71,7 @@ function Navigation() {
                 ${timerIsActive ? "disabled-link" : ""} 
                 ${location.pathname === "/brian-checks" ? "active" : ""}
               `}
+              style={{ textAlign: "center" }}
             >
               Brian Checks
             </Link>
