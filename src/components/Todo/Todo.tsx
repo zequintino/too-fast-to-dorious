@@ -16,7 +16,6 @@ export default function Todo() {
     task: "",
   });
   
-  // Use the simplified timer context
   const { 
     timerStatus,
     setTimerStatus,
