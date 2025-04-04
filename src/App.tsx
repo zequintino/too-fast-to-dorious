@@ -23,8 +23,8 @@ function DynamicBanner() {
 
   return (
     <div className="main-banner">
-      <h1>Too Fastlist Todorious</h1>
-      <img src={getBanner()} alt="Too Fastlist Todorious Banner" />
+      <h1>Too Fast Todorious</h1>
+      <img src={getBanner()} alt="Too Fast Todorious Banner" />
     </div>
   );
 }
