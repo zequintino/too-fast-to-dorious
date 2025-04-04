@@ -57,7 +57,7 @@ export default function CheckupList() {
           type="text"
           value={newCheckup}
           onChange={(e) => setNewCheckup(e.target.value)}
-          placeholder="Add new checkup item..."
+          placeholder="Add a check..."
         />
         <button onClick={handleAddCheckup}>
           <CiSquarePlus />
