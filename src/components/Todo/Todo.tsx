@@ -1,19 +1,19 @@
 import { useState, useRef, useCallback } from "react";
-import { CiSquarePlus, CiFloppyDisk } from "react-icons/ci";
 import "./Todo.css";
 import TodoItem from "./TodoItem";
 import Timer from "../Timer/Timer";
 import { useTimer, isTimerActive, isTimerCompleted } from "../../context/TimerContext";
-import { Task } from "../../types";
+import { ListItem } from "../../types";
 import useLocalStorage from "../../hooks/useLocalStorage";
+import InputWithButton from "../common/InputWithButton";
 
 export default function Todo() {
   const inputRef = useRef<HTMLInputElement>(null);
-  const [tasks, setTasks] = useLocalStorage<Task[]>("app_cachedTasks", []);
+  const [tasks, setTasks] = useLocalStorage<ListItem[]>("app_cachedTasks", []);
   const [input, setInput] = useState("");
   const [editTask, setEditTask] = useState({
     enabled: false,
-    task: "",
+    task: null as ListItem | null,
   });
   
   const { 
@@ -42,10 +42,10 @@ export default function Todo() {
     setInputVisible(true);
   }, [setTasks, setTimerStatus, setInputVisible]);
 
-  const handleCheckTask = useCallback((index: number) => {
+  const handleCheckTask = useCallback((id: string) => {
     setTasks((prevTasks) =>
-      prevTasks.map((task, i) =>
-        i === index ? { ...task, done: !task.done } : task
+      prevTasks.map((task) =>
+        task.id === id ? { ...task, completed: !task.completed } : task
       )
     );
   }, [setTasks]);
@@ -57,42 +57,51 @@ export default function Todo() {
       alert("Please enter a To-do...");
       return;
     }
-    if (editTask.enabled) {
+    if (editTask.enabled && editTask.task) {
       handleSaveEdit();
       return;
     }
-    setTasks([...tasks, { text: input, done: false }]);
+    
+    // Create a new ListItem
+    const newItem: ListItem = {
+      id: Date.now().toString(),
+      text: input,
+      completed: false
+    };
+    
+    setTasks([...tasks, newItem]);
     setInput("");
-  }, [timerStatus, input, editTask, setTasks]);
+  }, [timerStatus, input, editTask, setTasks, tasks]);
 
-  const handleEditTask = useCallback((item: Task) => {
+  const handleEditTask = useCallback((item: ListItem) => {
     if (isTimerActive(timerStatus)) return; // Disable when timer is active
     
     inputRef.current?.focus();
     setInput(item.text);
     setEditTask({
       enabled: true,
-      task: item.text,
+      task: item,
     });
   }, [timerStatus]);
 
   const handleSaveEdit = useCallback(() => {
-    if (isTimerActive(timerStatus)) return; // Disable when timer is active
+    if (isTimerActive(timerStatus) || !editTask.task) return;
     
-    const editedTasks = tasks.map((task) =>
-      task.text === editTask.task ? { ...task, text: input } : task
+    const taskId = editTask.task.id;
+    setTasks((prevTasks) =>
+      prevTasks.map((task) =>
+        task.id === taskId ? { ...task, text: input } : task
+      )
     );
-    setTasks(editedTasks);
     setInput("");
-    setEditTask({ enabled: false, task: "" });
-  }, [timerStatus, tasks, editTask, input, setTasks]);
+    setEditTask({ enabled: false, task: null });
+  }, [timerStatus, editTask.task, input, setTasks]);
 
-  const handleDeleteTask = useCallback((item: string) => {
+  const handleDeleteTask = useCallback((id: string) => {
     if (isTimerActive(timerStatus)) return; // Disable when timer is active
     
-    const newTasks = tasks.filter((task) => task.text !== item);
-    setTasks(newTasks);
-  }, [timerStatus, tasks, setTasks]);
+    setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
+  }, [timerStatus, setTasks]);
 
   // Check if there are any tasks
   const hasTasks = tasks.length > 0;
@@ -114,29 +123,26 @@ export default function Todo() {
       
       {/* Only show input when inputVisible is true and timer is not active */}
       {!timerIsActive && inputVisible && (
-        <div className="todo-input-area">
-          <input
-            ref={inputRef}
-            value={input}
-            placeholder="Add a to-do..."
-            onChange={(e) => setInput(e.target.value)}
-            disabled={timerIsActive}
-          />
-          <button onClick={handleAddTask} disabled={timerIsActive}>
-            {editTask.enabled ? <CiFloppyDisk /> : <CiSquarePlus />}
-          </button>
-        </div>
+        <InputWithButton
+          inputRef={inputRef}
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onSubmit={handleAddTask}
+          placeholder="Add a to-do..."
+          disabled={timerIsActive}
+          isEdit={editTask.enabled}
+          className="todo-input-area"
+        />
       )}
       
-      {tasks.map((item, index) => (
+      {tasks.map((item) => (
         <TodoItem 
-          key={index}
+          key={item.id}
           item={item}
-          index={index}
           onCheck={handleCheckTask}
           onEdit={handleEditTask}
           onDelete={handleDeleteTask}
-          timerStatus={timerStatus} // Pass the single status instead of two booleans
+          timerStatus={timerStatus}
         />
       ))}
     </div>

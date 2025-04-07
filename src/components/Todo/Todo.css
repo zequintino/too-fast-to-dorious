@@ -1,19 +1,9 @@
+/* Todo container specific styles */
 .todo-container section {
   margin-bottom: 10px;
 }
 
-.todo-container span {
-  flex-grow: 1;
-}
-
-.todo-container input[type="checkbox"] {
-  margin-right: 10px;
-}
-
-.todo-container button {
-  margin-left: 5px;
-}
-
+/* Todo-specific input area styles */
 .todo-input-area {
   display: flex;
   margin-bottom: 15px;
@@ -30,30 +20,11 @@
   white-space: nowrap;
 }
 
-/* Todo item */
-.todo-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px;
-  margin: 5px 0;
-  border: 2px solid #ddd;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: border-color 0.2s;
-}
-
-.todo-item.checked {
-  border-color: #4caf50;
-}
-
-/* Update timer-expired to have more natural animation */
-.todo-item.timer-expired {
-  border-color: #e74c3c;
+/* Timer-related animations - not included in shared styles */
+.todo-container .list-item.timer-expired {
   animation: pulse-error-border 2s infinite;
 }
 
-/* Modify animation to respect standard border color */
 @keyframes pulse-error-border {
   0% {
     border-color: #e74c3c;
@@ -71,34 +42,8 @@
   }
 }
 
-.todo-item.no-interact {
-  cursor: default;
-  pointer-events: none;
-  opacity: 0.9;
-}
-
-.todo-check-icon {
-  margin-right: 10px;
-  display: flex;
-  align-items: center;
-  flex-shrink: 0;
-}
-
-.todo-item span {
-  flex-grow: 1;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  margin-right: 10px;
-  min-width: 0; /* Required for text-overflow to work in flex items */
-}
-
-.todo-item-buttons {
-  display: flex;
-  flex-shrink: 0;
-}
-
-.todo-check-icon svg {
+/* Icon-specific styles */
+.list-item-icon svg {
   width: 24px;
   height: 24px;
 }

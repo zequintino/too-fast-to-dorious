@@ -1,0 +1,65 @@
+/* Common styles for list items (todo and checklist) */
+.list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: var(--list-item-bg, #ffffff);
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.list-item.completed {
+  border-color: var(--completed-color, #4caf50);
+}
+
+/* Text content */
+.list-item-content {
+  flex-grow: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-right: 10px;
+  min-width: 0;
+}
+
+/* Action buttons */
+.list-item-buttons {
+  display: flex;
+  gap: 5px;
+}
+
+/* Todo-specific styles */
+.todo-container .list-item {
+  border: 1px solid #ddd;
+}
+
+.todo-container .list-item.completed {
+  background-color: var(--todo-completed-bg, #f9fff9);
+}
+
+.todo-container .list-item-content.completed {
+  text-decoration: line-through;
+}
+
+/* Checkup-specific styles */
+.checkup-container .list-item {
+  border: 2px solid #ddd;
+}
+
+.checkup-container .list-item.completed {
+  border-color: #4caf50;
+  border-width: 2px;
+}
+
+/* Timer states for todo items */
+.todo-container .list-item.timer-expired {
+  border-color: var(--expired-color, #ff9800);
+}
+
+.todo-container .list-item.no-interact {
+  cursor: default;
+  opacity: 0.8;
+}

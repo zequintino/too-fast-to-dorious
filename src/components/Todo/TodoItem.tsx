@@ -1,84 +1,92 @@
-import { Task } from "../../types";
+import { memo } from 'react';
+import { ListItem } from "../../types";
 import { CiEdit, CiTrash, CiSquareCheck, CiStop1 } from "react-icons/ci";
 import { TimerStatus, isTimerActive, isTimerCompleted } from "../../context/TimerContext";
+import "../common/ListStyles.css"; // Import shared styles
 
 interface TodoItemProps {
-  item: Task;
-  index: number;
-  onCheck: (index: number) => void;
-  onEdit: (item: Task) => void;
-  onDelete: (text: string) => void;
-  timerStatus: TimerStatus; // Single status prop instead of two booleans
+  item: ListItem;
+  onCheck: (id: string) => void;
+  onEdit?: (item: ListItem) => void;
+  onDelete: (id: string) => void;
+  timerStatus?: TimerStatus;
+  showStrikethrough?: boolean;
 }
 
-export default function TodoItem({ 
+// Using memo to prevent unnecessary re-renders for performance optimization
+const TodoItem = memo(function TodoItem({ 
   item, 
-  index, 
   onCheck, 
   onEdit, 
   onDelete, 
-  timerStatus
+  timerStatus = 'idle',
+  showStrikethrough = true
 }: TodoItemProps) {
-  // Derive the boolean values for backward compatibility and readability
+  // Derive state from props
   const timerActive = isTimerActive(timerStatus);
   const timerCompleted = isTimerCompleted(timerStatus);
   
+  // Handle item click (toggle completion)
   const handleClick = () => {
-    // Prevent toggling tasks if timer has completed
     if (timerCompleted) return;
-    
-    onCheck(index);
+    onCheck(item.id);
   };
 
-  const handleButtonClick = (e: React.MouseEvent, action: () => void) => {
+  // Handle edit button click
+  const handleEditClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    action();
+    if (onEdit) onEdit(item);
   };
 
-  // Determine CSS classes based on state
-  const getItemClasses = () => {
-    let classes = 'todo-item';
-    
-    if (item.done) {
-      classes += ' checked';
-    } else if (timerCompleted) {
-      classes += ' timer-expired';
-    }
-    
-    // Add a class to show it's not interactive when timer is completed
-    if (timerCompleted) {
-      classes += ' no-interact';
-    }
-    
-    return classes;
+  // Handle delete button click
+  const handleDeleteClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    onDelete(item.id);
   };
+
+  // Compute class names using shared classes
+  const itemClassName = [
+    'list-item',
+    item.completed ? 'completed' : '',
+    !item.completed && timerCompleted ? 'timer-expired' : '',
+    timerCompleted ? 'no-interact' : ''
+  ].filter(Boolean).join(' ');
 
   return (
     <section 
-      className={getItemClasses()}
+      className={itemClassName}
       onClick={handleClick}
       role="listitem"
-      aria-checked={item.done}
+      aria-checked={item.completed}
     >
-      <div className="todo-check-icon" aria-hidden="true">
-        {item.done ? <CiSquareCheck /> : <CiStop1 />}
+      <div className="list-item-icon" aria-hidden="true">
+        {item.completed ? <CiSquareCheck /> : <CiStop1 />}
       </div>
-      <span style={{ textDecoration: item.done ? "line-through" : "none" }}>
+      
+      <span 
+        className={`list-item-content${item.completed ? ' completed' : ''}`}
+        style={{ 
+          textDecoration: item.completed && showStrikethrough ? "line-through" : "none"
+        }}
+      >
         {item.text}
       </span>
-      {/* Hide buttons when timer is active OR timer has completed */}
+      
+      {/* Conditionally render action buttons */}
       {!timerActive && !timerCompleted && (
-        <div className="todo-item-buttons">
-          <button 
-            className="icon-button" 
-            onClick={(e) => handleButtonClick(e, () => onEdit(item))}
-            aria-label={`Edit task: ${item.text}`}
-          >
-            <CiEdit />
-          </button>
+        <div className="list-item-buttons">
+          {onEdit && (
+            <button 
+              className="icon-button" 
+              onClick={handleEditClick}
+              aria-label={`Edit task: ${item.text}`}
+            >
+              <CiEdit />
+            </button>
+          )}
           <button 
             className="icon-button danger" 
-            onClick={(e) => handleButtonClick(e, () => onDelete(item.text))}
+            onClick={handleDeleteClick}
             aria-label={`Delete task: ${item.text}`}
           >
             <CiTrash />
@@ -87,4 +95,6 @@ export default function TodoItem({
       )}
     </section>
   );
-}
+});
+
+export default TodoItem;
