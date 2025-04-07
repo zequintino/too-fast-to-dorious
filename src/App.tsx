@@ -1,13 +1,14 @@
 import { BrowserRouter as Router, Routes, Route, Link, useLocation, useNavigate } from "react-router-dom";
-import { TimerProvider, useTimer, isTimerActive } from "./context/TimerContext";
 import { useEffect } from "react";
-import ErrorBoundary from "./components/ErrorBoundary";
+import { TimerProvider, useTimer, isTimerActive } from "./context/TimerContext";
 import TodoPage from "./pages/TodoPage";
 import ChecklistPage from "./pages/ChecklistPage";
-import "./App.css";
-import domBryanSwag from "./assets/dom-bryan-swag.png";
+import ErrorBoundary from "./components/ErrorBoundary";
 import domSwag from "./assets/dom-swag.png";
 import bryanSwag from "./assets/bryan-swag.png";
+import domBryanSwag from "./assets/dom-bryan-swag.png";
+import "./App.css";
+
 
 function DynamicBanner() {
   const location = useLocation();
@@ -29,22 +30,12 @@ function DynamicBanner() {
   );
 }
 
-// Navigation component with timer awareness
 function Navigation() {
   const { timerStatus } = useTimer();
   const timerIsActive = isTimerActive(timerStatus);
 
   const location = useLocation();
   const navigate = useNavigate();
-
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, path: string) => {
-    if (timerIsActive) {
-      e.preventDefault();
-      alert("Please finish or cancel the timer before navigating");
-      return;
-    }
-    navigate(path);
-  };
 
   return (
     <>
@@ -53,7 +44,7 @@ function Navigation() {
           <li>
             <Link
               to="/"
-              onClick={(e) => handleNavClick(e, "/")}
+              onClick={() => navigate("/")}
               className={`
                 ${timerIsActive ? "disabled-link" : ""} 
                 ${location.pathname === "/" ? "active" : ""}
@@ -65,7 +56,7 @@ function Navigation() {
           <li>
             <Link
               to="/brian-checks"
-              onClick={(e) => handleNavClick(e, "/brian-checks")}
+              onClick={() => navigate("/brian-checks")}
               className={`
                 ${timerIsActive ? "disabled-link" : ""} 
                 ${location.pathname === "/brian-checks" ? "active" : ""}
@@ -80,7 +71,6 @@ function Navigation() {
   );
 }
 
-// Footer component
 function Footer() {
   return (
     <footer className="app-footer">
@@ -89,7 +79,6 @@ function Footer() {
   );
 }
 
-// NotFound component that throws an error for invalid routes
 function NotFound() {
   useEffect(() => {
     throw new Error("Route not found");
@@ -108,11 +97,7 @@ function AppContent() {
           <Route
             path="/"
             element={
-              <ErrorBoundary
-                fallback={
-                  <div>Sorry, something went wrong with the Dom Does page.</div>
-                }
-              >
+              <ErrorBoundary fallback={<div>Sorry, something went wrong with Dom.</div>}>
                 <TodoPage />
               </ErrorBoundary>
             }
@@ -120,11 +105,7 @@ function AppContent() {
           <Route
             path="/brian-checks"
             element={
-              <ErrorBoundary
-                fallback={
-                  <div>Sorry, something went wrong with the Brian Checks page.</div>
-                }
-              >
+              <ErrorBoundary fallback={<div>Sorry, something went wrong with Brian.</div>}>
                 <ChecklistPage />
               </ErrorBoundary>
             }

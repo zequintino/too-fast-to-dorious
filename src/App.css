@@ -114,7 +114,7 @@ button:hover {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #f0f0f0;
+  background: transparent; /* Changed from #f0f0f0 to transparent */
   border: none;
   border-radius: 4px;
   padding: 6px;
@@ -124,7 +124,7 @@ button:hover {
 }
 
 .icon-button:hover {
-  background: #e0e0e0;
+  background: rgba(0,0,0,0.05); /* Changed to a subtle hover effect */
 }
 
 .icon-button.danger {
@@ -132,16 +132,16 @@ button:hover {
 }
 
 .icon-button.danger:hover {
-  background: #fee;
+  background: rgba(231, 76, 60, 0.1); /* Subtle red hover */
 }
 
 /* Global icon styles */
-svg {
+/* svg {
   min-width: 24px;
   min-height: 24px;
   width: 24px;
   height: 24px;
-}
+} */
 
 /* Page container styles */
 .page {
