@@ -1,0 +1,61 @@
+/* Common styles for list items (todo and checklist) */
+.list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 10px; /* Reduced padding for sleeker appearance */
+  margin-bottom: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: var(--list-item-bg, #ffffff);
+  transition: background-color 0.2s, border-color 0.2s;
+  border: 1px solid #ddd; /* Consistent border width for all list items */
+  min-height: 44px; /* Fixed minimum height for consistency */
+  box-sizing: border-box; /* Ensure padding is included in height calculation */
+}
+
+.list-item.completed {
+  border-color: var(--completed-color, #4caf50);
+  background-color: var(--todo-completed-bg, #e9f7e9); /* Apply pastel green bg to all completed items */
+}
+
+.list-item-icon {
+  margin-right: 16px;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  height: 24px; /* Fixed height for consistency */
+}
+
+/* Text content */
+.list-item-content {
+  flex-grow: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-right: 10px;
+  min-width: 0;
+  padding-left: 4px;
+  line-height: 1.5; /* Consistent line height */
+}
+
+/* Action buttons */
+.list-item-buttons {
+  display: flex;
+  gap: 5px;
+  height: 24px; /* Fixed height for consistency */
+}
+
+/* Prop-based style classes that get applied based on component props */
+.list-item-content.with-strikethrough {
+  text-decoration: line-through;
+}
+
+.list-item.timer-expired {
+  border-color: var(--expired-color, #ff9800);
+}
+
+.list-item.no-interact {
+  cursor: default;
+  opacity: 0.8;
+}

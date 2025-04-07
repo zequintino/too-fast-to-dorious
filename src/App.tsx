@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Link, useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { TimerProvider, useTimer, isTimerActive } from "./context/TimerContext";
-import TodoPage from "./pages/TodoPage";
+import TodoListPage from "./pages/TodoListPage";
 import ChecklistPage from "./pages/ChecklistPage";
 import ErrorBoundary from "./components/ErrorBoundary";
 import domSwag from "./assets/dom-swag.png";
@@ -98,7 +98,7 @@ function AppContent() {
             path="/"
             element={
               <ErrorBoundary fallback={<div>Sorry, something went wrong with Dom.</div>}>
-                <TodoPage />
+                <TodoListPage />
               </ErrorBoundary>
             }
           />

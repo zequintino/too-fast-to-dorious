@@ -1,27 +1,27 @@
 import { memo } from 'react';
-import { ListItem } from "../../types";
+import { Item } from "../../types";
 import { CiEdit, CiTrash, CiSquareCheck, CiStop1 } from "react-icons/ci";
 import { TimerStatus, isTimerActive, isTimerCompleted } from "../../context/TimerContext";
-import "../common/ListStyles.css"; // Import shared styles
+import "./ListItemStyles.css";
 
-interface TodoItemProps {
-  item: ListItem;
+interface ListItemProps {
+  item: Item;
   onCheck: (id: string) => void;
-  onEdit?: (item: ListItem) => void;
+  onEdit?: (item: Item) => void;
   onDelete: (id: string) => void;
   timerStatus?: TimerStatus;
   showStrikethrough?: boolean;
 }
 
 // Using memo to prevent unnecessary re-renders for performance optimization
-const TodoItem = memo(function TodoItem({ 
+const ListItemComponent = memo(function ListItemComponent({ 
   item, 
   onCheck, 
   onEdit, 
   onDelete, 
   timerStatus = 'idle',
   showStrikethrough = true
-}: TodoItemProps) {
+}: ListItemProps) {
   // Derive state from props
   const timerActive = isTimerActive(timerStatus);
   const timerCompleted = isTimerCompleted(timerStatus);
@@ -52,6 +52,12 @@ const TodoItem = memo(function TodoItem({
     timerCompleted ? 'no-interact' : ''
   ].filter(Boolean).join(' ');
 
+  // Compute content class name based on props
+  const contentClassName = [
+    'list-item-content',
+    item.completed && showStrikethrough ? 'with-strikethrough' : ''
+  ].filter(Boolean).join(' ');
+
   return (
     <section 
       className={itemClassName}
@@ -63,12 +69,7 @@ const TodoItem = memo(function TodoItem({
         {item.completed ? <CiSquareCheck /> : <CiStop1 />}
       </div>
       
-      <span 
-        className={`list-item-content${item.completed ? ' completed' : ''}`}
-        style={{ 
-          textDecoration: item.completed && showStrikethrough ? "line-through" : "none"
-        }}
-      >
+      <span className={contentClassName}>
         {item.text}
       </span>
       
@@ -79,7 +80,7 @@ const TodoItem = memo(function TodoItem({
             <button 
               className="icon-button" 
               onClick={handleEditClick}
-              aria-label={`Edit task: ${item.text}`}
+              aria-label={`Edit item: ${item.text}`}
             >
               <CiEdit />
             </button>
@@ -87,7 +88,7 @@ const TodoItem = memo(function TodoItem({
           <button 
             className="icon-button danger" 
             onClick={handleDeleteClick}
-            aria-label={`Delete task: ${item.text}`}
+            aria-label={`Delete item: ${item.text}`}
           >
             <CiTrash />
           </button>
@@ -97,4 +98,4 @@ const TodoItem = memo(function TodoItem({
   );
 });
 
-export default TodoItem;
+export default ListItemComponent;

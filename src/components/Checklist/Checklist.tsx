@@ -1,12 +1,12 @@
 import { useState, useEffect, useRef } from "react";
-import TodoItem from "../Todo/TodoItem";
-import { ListItem } from "../../types";
-import InputWithButton from "../common/InputWithButton";
-import "../common/ListStyles.css"; // Import shared styles
+import ListItem from "../common/ListItem";
+import { Item } from "../../types";
+import InputWithButton from "../common/AddItem";
+import "../common/ListItemStyles.css";
 
 export default function CheckupList() {
   const firstRender = useRef(true);
-  const [checkups, setCheckups] = useState<ListItem[]>([]);
+  const [checkups, setCheckups] = useState<Item[]>([]);
   const [newCheckup, setNewCheckup] = useState("");
 
   useEffect(() => {
@@ -25,7 +25,7 @@ export default function CheckupList() {
       return;
     }
 
-    const newItem: ListItem = {
+    const newItem: Item = {
       id: Date.now().toString(),
       text: newCheckup,
       completed: false
@@ -57,7 +57,7 @@ export default function CheckupList() {
 
       <div className="checkup-items">
         {checkups.map((item) => (
-          <TodoItem
+          <ListItem
             key={item.id}
             item={item}
             onCheck={handleCheckTask}

@@ -1,19 +1,19 @@
 import { useState, useRef, useCallback } from "react";
-import "./Todo.css";
-import TodoItem from "./TodoItem";
+import { Item } from "../../types";
 import Timer from "../Timer/Timer";
+import ListItem from "../common/ListItem";
 import { useTimer, isTimerActive, isTimerCompleted } from "../../context/TimerContext";
-import { ListItem } from "../../types";
 import useLocalStorage from "../../hooks/useLocalStorage";
-import InputWithButton from "../common/InputWithButton";
+import AddItem from "../common/AddItem";
+import "./TodoList.css";
 
 export default function Todo() {
   const inputRef = useRef<HTMLInputElement>(null);
-  const [tasks, setTasks] = useLocalStorage<ListItem[]>("app_cachedTasks", []);
+  const [tasks, setTasks] = useLocalStorage<Item[]>("app_cachedTasks", []);
   const [input, setInput] = useState("");
   const [editTask, setEditTask] = useState({
     enabled: false,
-    task: null as ListItem | null,
+    task: null as Item | null,
   });
   
   const { 
@@ -63,7 +63,7 @@ export default function Todo() {
     }
     
     // Create a new ListItem
-    const newItem: ListItem = {
+    const newItem: Item = {
       id: Date.now().toString(),
       text: input,
       completed: false
@@ -73,7 +73,7 @@ export default function Todo() {
     setInput("");
   }, [timerStatus, input, editTask, setTasks, tasks]);
 
-  const handleEditTask = useCallback((item: ListItem) => {
+  const handleEditTask = useCallback((item: Item) => {
     if (isTimerActive(timerStatus)) return; // Disable when timer is active
     
     inputRef.current?.focus();
@@ -123,7 +123,7 @@ export default function Todo() {
       
       {/* Only show input when inputVisible is true and timer is not active */}
       {!timerIsActive && inputVisible && (
-        <InputWithButton
+        <AddItem
           inputRef={inputRef}
           value={input}
           onChange={(e) => setInput(e.target.value)}
@@ -136,7 +136,7 @@ export default function Todo() {
       )}
       
       {tasks.map((item) => (
-        <TodoItem 
+        <ListItem 
           key={item.id}
           item={item}
           onCheck={handleCheckTask}

@@ -30,12 +30,12 @@
     border-color: #e74c3c;
     background-color: rgba(231, 76, 60, 0.05);
   }
-  
+
   50% {
     border-color: #ff6b6b;
     background-color: rgba(255, 107, 107, 0.1);
   }
-  
+
   100% {
     border-color: #e74c3c;
     background-color: rgba(231, 76, 60, 0.05);

@@ -1,8 +1,8 @@
 import { forwardRef, ReactNode } from 'react';
 import { CiSquarePlus, CiFloppyDisk } from "react-icons/ci";
-import './InputWithButton.css';
+import './AddItem.css';
 
-interface InputWithButtonProps {
+interface AddItemProps {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onSubmit: () => void;
@@ -14,8 +14,8 @@ interface InputWithButtonProps {
   inputRef?: React.RefObject<HTMLInputElement>;
 }
 
-// Create a reusable component for input with button that can be used in both Todo and Checklist
-const InputWithButton = forwardRef<HTMLInputElement, InputWithButtonProps>(
+
+const AddItem = forwardRef<HTMLInputElement, AddItemProps>(
   ({ 
     value, 
     onChange, 
@@ -67,6 +67,6 @@ const InputWithButton = forwardRef<HTMLInputElement, InputWithButtonProps>(
 );
 
 // Set display name for better debugging
-InputWithButton.displayName = 'InputWithButton';
+// AddItem.displayName = 'AddItem';
 
-export default InputWithButton;
+export default AddItem;
