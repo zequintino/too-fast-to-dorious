@@ -43,17 +43,16 @@ const Checklist = () => {
         onSubmit={handleAddItem}
         placeholder="Add something to check..."
       />
-
-      {items.length > 0 && (
-        items.map(item => (
-          <ListItem
-            key={item.id}
-            item={item}
-            onCheck={handleToggleItem}
-            onDelete={handleDeleteItem}
-            showStrikethrough={false}
-          />
-        ))
+      
+      {items.length > 0 && (items.map(item => (
+        <ListItem
+          key={item.id}
+          item={item}
+          onCheck={handleToggleItem}
+          onDelete={handleDeleteItem}
+          showStrikethrough={false}
+        />
+      ))
       )}
     </>
   );
