@@ -126,7 +126,7 @@ export default function TodoList() {
         <AddItem
           inputRef={inputRef}
           value={input}
-          onChange={(e) => setInput(e.target.value)}
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) => setInput(event.target.value)}
           onSubmit={handleAddTask}
           placeholder="Add something to do..."
           disabled={timerIsActive}

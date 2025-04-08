@@ -3,7 +3,7 @@ import useLocalStorage from "../../hooks/useLocalStorage";
 import { Item } from "../../types";
 import AddItem from "../Common/AddItem";
 import ListItem from "../Common/ListItem";
-import "../common/ListItemStyles.css";
+import "../Common/ListItemStyles.css";
 
 const Checklist = () => {
   const [items, setItems] = useLocalStorage<Item[]>("app_checklist_items", []);
@@ -39,7 +39,7 @@ const Checklist = () => {
     <>
       <AddItem
         value={newItem}
-        onChange={event => setNewItem(event.target.value)}
+        onChange={(event: React.ChangeEvent<HTMLInputElement>) => setNewItem(event.target.value)}
         onSubmit={handleAddItem}
         placeholder="Add something to check..."
       />
