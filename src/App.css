@@ -136,12 +136,12 @@ button:hover {
 }
 
 /* Global icon styles */
-/* svg {
+svg {
   min-width: 24px;
   min-height: 24px;
   width: 24px;
   height: 24px;
-} */
+}
 
 /* Page container styles */
 .page {

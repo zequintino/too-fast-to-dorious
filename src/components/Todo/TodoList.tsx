@@ -1,13 +1,13 @@
 import { useState, useRef, useCallback } from "react";
 import { Item } from "../../types";
 import Timer from "../Timer/Timer";
-import ListItem from "../common/ListItem";
+import ListItem from "../Common/ListItem";
 import { useTimer, isTimerActive, isTimerCompleted } from "../../context/TimerContext";
 import useLocalStorage from "../../hooks/useLocalStorage";
-import AddItem from "../common/AddItem";
+import AddItem from "../Common/AddItem";
 import "./TodoList.css";
 
-export default function Todo() {
+export default function TodoList() {
   const inputRef = useRef<HTMLInputElement>(null);
   const [tasks, setTasks] = useLocalStorage<Item[]>("app_cachedTasks", []);
   const [input, setInput] = useState("");
@@ -54,7 +54,7 @@ export default function Todo() {
     if (isTimerActive(timerStatus)) return; // Disable when timer is active
     
     if (!input) {
-      alert("Please enter a To-do...");
+      alert("Please enter something to do...");
       return;
     }
     if (editTask.enabled && editTask.task) {
@@ -111,7 +111,7 @@ export default function Todo() {
   const timerIsCompleted = isTimerCompleted(timerStatus);
 
   return (
-    <div className="todo-container" role="region" aria-label="Todo List">
+    <div className="todo-container page" role="region" aria-label="Todo List">
       <Timer 
         isActive={timerIsActive}
         isCompleted={timerIsCompleted}
@@ -128,10 +128,9 @@ export default function Todo() {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onSubmit={handleAddTask}
-          placeholder="Add a to-do..."
+          placeholder="Add something to do..."
           disabled={timerIsActive}
           isEdit={editTask.enabled}
-          className="todo-input-area"
         />
       )}
       

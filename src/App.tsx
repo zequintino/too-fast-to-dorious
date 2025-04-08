@@ -24,7 +24,7 @@ function DynamicBanner() {
 
   return (
     <div className="main-banner">
-      <h1>Too Fast Todorious</h1>
+      <h1>Too Fast To Dorious</h1>
       <img src={getBanner()} alt="Too Fast Todorious Banner" />
     </div>
   );
@@ -83,8 +83,8 @@ function NotFound() {
   useEffect(() => {
     throw new Error("Route not found");
   }, []);
-
-  return null; // This won't render as the error is thrown in useEffect
+  
+  return null;
 }
 
 function AppContent() {

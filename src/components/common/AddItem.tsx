@@ -14,7 +14,6 @@ interface AddItemProps {
   inputRef?: React.RefObject<HTMLInputElement>;
 }
 
-
 const AddItem = forwardRef<HTMLInputElement, AddItemProps>(
   ({ 
     value, 
@@ -65,8 +64,5 @@ const AddItem = forwardRef<HTMLInputElement, AddItemProps>(
     );
   }
 );
-
-// Set display name for better debugging
-// AddItem.displayName = 'AddItem';
 
 export default AddItem;
