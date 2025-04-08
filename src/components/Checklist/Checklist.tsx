@@ -1,9 +1,9 @@
 import { useState, useCallback } from "react";
 import useLocalStorage from "../../hooks/useLocalStorage";
 import { Item } from "../../types";
-import AddItem from "../Common/AddItem";
-import ListItem from "../Common/ListItem";
-import "../Common/ListItemStyles.css";
+import AddItem from "../common/AddItem";
+import ListItem from "../common/ListItem";
+import "../common/ListItemStyles.css";
 
 const Checklist = () => {
   const [items, setItems] = useLocalStorage<Item[]>("app_checklist_items", []);

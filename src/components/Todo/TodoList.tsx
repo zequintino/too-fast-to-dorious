@@ -1,10 +1,10 @@
 import { useState, useRef, useCallback } from "react";
 import { Item } from "../../types";
 import Timer from "../Timer/Timer";
-import ListItem from "../Common/ListItem";
+import ListItem from "../common/ListItem";
 import { useTimer, isTimerActive, isTimerCompleted } from "../../context/TimerContext";
 import useLocalStorage from "../../hooks/useLocalStorage";
-import AddItem from "../Common/AddItem";
+import AddItem from "../common/AddItem";
 import "./TodoList.css";
 
 export default function TodoList() {
